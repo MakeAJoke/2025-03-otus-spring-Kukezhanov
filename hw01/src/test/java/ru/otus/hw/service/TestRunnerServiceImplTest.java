@@ -9,7 +9,8 @@ import ru.otus.hw.dao.QuestionDao;
 import ru.otus.hw.datasource.FileDataSource;
 import ru.otus.hw.datasource.ResourceFileDataSource;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
