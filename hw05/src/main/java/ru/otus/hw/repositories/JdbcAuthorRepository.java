@@ -5,7 +5,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.shell.standard.ShellOption;
 import org.springframework.stereotype.Repository;
 import ru.otus.hw.exceptions.EntityNotFoundException;
 import ru.otus.hw.models.Author;
@@ -29,7 +28,7 @@ public class JdbcAuthorRepository implements AuthorRepository {
     }
 
     @Override
-    public Optional<Author> findById(@ShellOption(help = "ID of the book") long id) {
+    public Optional<Author> findById(long id) {
         return Optional.ofNullable(
                 jdbcTemplate.queryForObject("SELECT id, full_name FROM authors WHERE id = :id",
                         Collections.singletonMap("id", id), new AuthorRowMapper()));

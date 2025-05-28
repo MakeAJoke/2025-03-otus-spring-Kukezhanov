@@ -91,7 +91,7 @@ public class JdbcBookRepository implements BookRepository {
         Map<Long, Set<Long>> bookIdToGenreId = relations.stream()
                 .collect(Collectors.groupingBy(BookGenreRelation::bookId,
                         Collectors.mapping(BookGenreRelation::genreId, Collectors.toSet())));
-        booksWithoutGenres.stream().forEach(book -> {
+        booksWithoutGenres.forEach(book -> {
             Set<Long> bookGenresId = bookIdToGenreId.get(book.getId());
             List<Genre> bookGenres = genres.stream().filter(genre -> bookGenresId.contains(genre.getId())).toList();
             book.getGenres().addAll(bookGenres);
@@ -107,8 +107,11 @@ public class JdbcBookRepository implements BookRepository {
         jdbcTemplate.update("INSERT INTO books(title, author_id) VALUES(:title, :authorId)",
                 params, keyHolder, new String[]{"id"});
 
-        //noinspection DataFlowIssue
-        book.setId(keyHolder.getKeyAs(Long.class));
+        Long id = keyHolder.getKeyAs(Long.class);
+        if (id == null) {
+            throw new IllegalStateException("Failed to retrieve generated key for book insert");
+        }
+        book.setId(id);
         batchInsertGenresRelationsFor(book);
         return book;
     }
@@ -153,7 +156,6 @@ public class JdbcBookRepository implements BookRepository {
         }
     }
 
-    @SuppressWarnings("ClassCanBeRecord")
     @RequiredArgsConstructor
     private static class BookResultSetExtractor implements ResultSetExtractor<Book> {
 

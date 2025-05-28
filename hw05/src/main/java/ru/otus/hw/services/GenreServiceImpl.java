@@ -39,7 +39,9 @@ public class GenreServiceImpl implements GenreService {
                 .filter(book -> book.getGenres().contains(genre.getId()))
                 .findAny()
                 .ifPresent(book -> {
-                    throw new IllegalArgumentException("Genre with id %d should not linked with any books".formatted(id));
+                    throw new IllegalArgumentException(
+                            "Genre with id %d should not linked with any books".formatted(id)
+                    );
                 });
         genreRepository.deleteById(id);
     }
