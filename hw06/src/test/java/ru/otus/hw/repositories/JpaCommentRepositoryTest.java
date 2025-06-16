@@ -27,7 +27,7 @@ class JpaCommentRepositoryTest {
 
     @Test
     void shouldReturnCommentById() {
-        var author = new Author(0, "TestAuthor_1", null);
+        var author = new Author("TestAuthor_1");
         var genre = new Genre(0, "TestGenre_1");
         var book = new Book(0, "TestBook_1", author, List.of(genre), null);
         var comment1 = new Comment(0, "first comment text", book);
@@ -54,7 +54,7 @@ class JpaCommentRepositoryTest {
 
     @Test
     void shouldReturnAllBookComments() {
-        var author = new Author(0, "TestAuthor_1", null);
+        var author = new Author("TestAuthor_1");
         var genre = new Genre(0, "TestGenre_1");
         var book = new Book(0, "TestBook_1", author, List.of(genre), null);
         var comment1 = new Comment(0, "first comment text", book);
@@ -79,7 +79,7 @@ class JpaCommentRepositoryTest {
 
     @Test
     void shouldInsertComment() {
-        var author = new Author(0, "TestAuthor_1", null);
+        var author = new Author("TestAuthor_1");
         var genre = new Genre(0, "TestGenre_1");
         var book = new Book(0, "TestBook_1", author, List.of(genre), null);
 
@@ -100,7 +100,7 @@ class JpaCommentRepositoryTest {
 
     @Test
     void shouldUpdateComment() {
-        var author = new Author(0, "TestAuthor_1", null);
+        var author = new Author("TestAuthor_1");
         var genre = new Genre(0, "TestGenre_1");
         var book = new Book(0, "TestBook_1", author, List.of(genre), null);
         var comment = new Comment(0, "first comment text", book);
@@ -133,7 +133,7 @@ class JpaCommentRepositoryTest {
 
     @Test
     void shouldDeleteComment() {
-        var author = new Author(0, "TestAuthor_1", null);
+        var author = new Author("TestAuthor_1");
         var genre = new Genre(0, "TestGenre_1");
         var book = new Book(0, "TestBook_1", author, List.of(genre), null);
         var comment = new Comment(0, "first comment text", book);

@@ -29,7 +29,7 @@ public class GenreServiceImpl implements GenreService {
 
     @Transactional
     @Override
-    public GenreDto insert(String name) {
+    public GenreDto save(String name) {
         return genreConverter.genreToDto(genreRepository.save(new Genre(0, name)));
     }
 

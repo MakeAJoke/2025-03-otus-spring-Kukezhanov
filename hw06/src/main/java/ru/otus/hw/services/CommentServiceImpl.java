@@ -39,7 +39,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Transactional
     @Override
-    public CommentDto insert(long bookId, String text) {
+    public CommentDto save(long bookId, String text) {
         Book book = bookRepository.findById(bookId).orElseThrow(() ->
                 new EntityNotFoundException("Book with id %d not found".formatted(bookId)));
         Comment comment = new Comment(0, text, book);

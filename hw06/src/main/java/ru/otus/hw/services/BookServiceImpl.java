@@ -7,13 +7,16 @@ import ru.otus.hw.converters.BookConverter;
 import ru.otus.hw.exceptions.EntityNotFoundException;
 import ru.otus.hw.models.Book;
 import ru.otus.hw.models.dto.BookDto;
+import ru.otus.hw.models.dto.GenreDto;
 import ru.otus.hw.repositories.AuthorRepository;
 import ru.otus.hw.repositories.BookRepository;
 import ru.otus.hw.repositories.GenreRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.springframework.util.CollectionUtils.isEmpty;
 
@@ -43,14 +46,22 @@ public class BookServiceImpl implements BookService {
 
     @Transactional
     @Override
-    public BookDto insert(String title, long authorId, Set<Long> genresIds) {
+    public BookDto create(String title, long authorId, Set<Long> genresIds) {
         return save(0, title, authorId, genresIds);
     }
 
     @Transactional
     @Override
-    public BookDto update(long id, String title, long authorId, Set<Long> genresIds) {
-        return save(id, title, authorId, genresIds);
+    public BookDto update(BookDto bookDto) {
+        Set<Long> genresIdSet = bookDto.genres().stream()
+                .map(GenreDto::id)
+                .collect(Collectors.toSet());
+        return save(
+                bookDto.id(),
+                bookDto.title(),
+                bookDto.author().id(),
+                genresIdSet
+        );
     }
 
     @Transactional
@@ -73,7 +84,7 @@ public class BookServiceImpl implements BookService {
 
         Book book = null;
         if (id == 0) {
-            book = new Book(id, title, author, genres, null);
+            book = new Book(id, title, author, genres, new ArrayList<>());
         } else {
             book = bookRepository.findById(id)
                     .orElseThrow(() -> new EntityNotFoundException("Book with id %d not found".formatted(id)));

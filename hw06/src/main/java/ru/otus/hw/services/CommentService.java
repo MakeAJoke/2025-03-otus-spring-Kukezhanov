@@ -11,7 +11,7 @@ public interface CommentService {
 
     List<CommentDto> findAllByBookId(long id);
 
-    CommentDto insert(long bookId, String text);
+    CommentDto save(long bookId, String text);
 
     CommentDto update(long id, String text);
 

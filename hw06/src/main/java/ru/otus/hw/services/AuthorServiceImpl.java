@@ -9,7 +9,6 @@ import ru.otus.hw.models.Author;
 import ru.otus.hw.models.dto.AuthorDto;
 import ru.otus.hw.repositories.AuthorRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -28,17 +27,17 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Transactional
     @Override
-    public AuthorDto insert(String fullName) {
-        return authorConverter.authorToDto(authorRepository.save(new Author(0, fullName, new ArrayList<>())));
+    public AuthorDto save(String fullName) {
+        return authorConverter.authorToDto(authorRepository.save(new Author(fullName)));
     }
 
     @Transactional
     @Override
-    public AuthorDto update(long id, String fullName) {
-        Author author = authorRepository.findById(id).orElseThrow(() ->
-                new EntityNotFoundException("Author with id %d not found".formatted(id)));
-        author.setFullName(fullName);
-        return authorConverter.authorToDto(authorRepository.save(author));
+    public AuthorDto update(AuthorDto authorDto) {
+        Author author = authorRepository.findById(authorDto.id()).orElseThrow(() ->
+                new EntityNotFoundException("Author with id %d not found".formatted(authorDto.id())));
+        author.setFullName(authorDto.fullName());
+        return authorDto;
     }
 
     @Transactional

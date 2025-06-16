@@ -7,9 +7,9 @@ import java.util.List;
 public interface AuthorService {
     List<AuthorDto> findAll();
 
-    AuthorDto insert(String fullName);
+    AuthorDto save(String fullName);
 
-    AuthorDto update(long id, String fullName);
+    AuthorDto update(AuthorDto authorDto);
 
     void deleteById(long id);
 }

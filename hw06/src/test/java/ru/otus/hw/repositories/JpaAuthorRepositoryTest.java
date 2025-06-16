@@ -24,8 +24,8 @@ class JpaAuthorRepositoryTest {
 
     @Test
     void shouldReturnAllAuthors() {
-        var author1 = new Author(0, "Лев Толстой", null);
-        var author2 = new Author(0, "Александр Пушкин", null);
+        var author1 = new Author("Лев Толстой");
+        var author2 = new Author("Александр Пушкин");
 
         testEntityManager.persist(author1);
         testEntityManager.persist(author2);
@@ -41,7 +41,7 @@ class JpaAuthorRepositoryTest {
 
     @Test
     void shouldReturnAuthorById() {
-        var expectedAuthor = new Author(0, "Лев Толстой", null);
+        var expectedAuthor = new Author("Лев Толстой");
         testEntityManager.persistAndFlush(expectedAuthor);
         testEntityManager.clear();
 
@@ -51,7 +51,7 @@ class JpaAuthorRepositoryTest {
 
     @Test
     void shouldInsertAuthor() {
-        var expectedAuthor = new Author(0, "Лев Толстой", null);
+        var expectedAuthor = new Author("Лев Толстой");
         authorRepository.save(expectedAuthor);
 
         Author actualAuthor = testEntityManager.find(Author.class, expectedAuthor.getId());
@@ -60,7 +60,7 @@ class JpaAuthorRepositoryTest {
 
     @Test
     void shouldUpdateAuthor() {
-        var expectedAuthor = new Author(0, "Лев Толстой", null);
+        var expectedAuthor = new Author("Лев Толстой");
         testEntityManager.persistAndFlush(expectedAuthor);
         testEntityManager.clear();
 
@@ -83,7 +83,7 @@ class JpaAuthorRepositoryTest {
 
     @Test
     void shouldDeleteAuthor() {
-        var author = new Author(0, "Лев Толстой", null);
+        var author = new Author("Лев Толстой");
         testEntityManager.persistAndFlush(author);
         testEntityManager.clear();
 

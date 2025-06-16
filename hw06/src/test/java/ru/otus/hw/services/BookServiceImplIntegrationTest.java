@@ -35,10 +35,10 @@ class BookServiceImplIntegrationTest {
 
 
     @Test
-    void shouldInsertAndFindBook() {
-        AuthorDto author = authorService.insert("Author_1");
-        GenreDto genre = genreService.insert("Genre_1");
-        BookDto expectedBook = bookService.insert("new_book", author.id(), Set.of(genre.id()));
+    void shouldCreateAndFindBook() {
+        AuthorDto author = authorService.save("Author_1");
+        GenreDto genre = genreService.save("Genre_1");
+        BookDto expectedBook = bookService.create("new_book", author.id(), Set.of(genre.id()));
 
         Optional<BookDto> actualBookOptional = bookService.findById(expectedBook.id());
 

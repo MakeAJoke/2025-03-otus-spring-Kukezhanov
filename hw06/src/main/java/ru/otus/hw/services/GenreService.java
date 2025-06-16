@@ -7,7 +7,7 @@ import java.util.List;
 public interface GenreService {
     List<GenreDto> findAll();
 
-    GenreDto insert(String name);
+    GenreDto save(String name);
 
     GenreDto update(long id, String name);
 

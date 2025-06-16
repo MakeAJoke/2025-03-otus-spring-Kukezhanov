@@ -37,11 +37,11 @@ public class CommentServiceImpIntegrationTest {
     private CommentService commentService;
 
     @Test
-    void shouldInsertAndFindComment() {
-        AuthorDto author = authorService.insert("Author_1");
-        GenreDto genre = genreService.insert("Genre_1");
-        BookDto book = bookService.insert("new_book", author.id(), Set.of(genre.id()));
-        CommentDto expectedComment = commentService.insert(book.id(), "first_comment");
+    void shouldSaveAndFindComment() {
+        AuthorDto author = authorService.save("Author_1");
+        GenreDto genre = genreService.save("Genre_1");
+        BookDto book = bookService.create("new_book", author.id(), Set.of(genre.id()));
+        CommentDto expectedComment = commentService.save(book.id(), "first_comment");
 
         Optional<CommentDto> actualCommentOptional = commentService.findById(expectedComment.id());
 

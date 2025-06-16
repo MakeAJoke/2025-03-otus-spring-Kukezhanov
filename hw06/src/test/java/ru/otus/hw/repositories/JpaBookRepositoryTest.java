@@ -26,8 +26,8 @@ class JpaBookRepositoryTest {
 
     @Test
     void shouldReturnAllBooks() {
-        var author1 = new Author(0, "TestAuthor_1", null);
-        var author2 = new Author(0, "TestAuthor_2", null);
+        var author1 = new Author("TestAuthor_1");
+        var author2 = new Author("TestAuthor_2");
         var genre1 = new Genre(0, "TestGenre_1");
         var genre2 = new Genre(0, "TestGenre_2");
         var genre3 = new Genre(0, "TestGenre_3");
@@ -52,7 +52,7 @@ class JpaBookRepositoryTest {
 
     @Test
     void shouldReturnBookById() {
-        var author = new Author(0, "TestAuthor_1", null);
+        var author = new Author("TestAuthor_1");
         var genre1 = new Genre(0, "TestGenre_1");
         var genre2 = new Genre(0, "TestGenre_2");
         var book = new Book(0, "TestBook_1", author, List.of(genre1, genre2), null);
@@ -72,7 +72,7 @@ class JpaBookRepositoryTest {
 
     @Test
     void shouldInsertBook() {
-        var author = new Author(0, "TestAuthor_1", null);
+        var author = new Author("TestAuthor_1");
         var genre1 = new Genre(0, "TestGenre_1");
         var genre2 = new Genre(0, "TestGenre_2");
         testEntityManager.persist(author);
@@ -90,8 +90,8 @@ class JpaBookRepositoryTest {
 
     @Test
     void shouldUpdateBook() {
-        var author1 = new Author(0, "TestAuthor_1", null);
-        var author2 = new Author(0, "TestAuthor_2", null);
+        var author1 = new Author("TestAuthor_1");
+        var author2 = new Author("TestAuthor_2");
         var genre1 = new Genre(0, "TestGenre_1");
         var genre2 = new Genre(0, "TestGenre_2");
         var genre3 = new Genre(0, "TestGenre_3");
@@ -128,7 +128,7 @@ class JpaBookRepositoryTest {
 
     @Test
     void shouldDeleteBook() {
-        var author = new Author(0, "TestAuthor_1", null);
+        var author = new Author("TestAuthor_1");
         var genre1 = new Genre(0, "TestGenre_1");
         var genre2 = new Genre(0, "TestGenre_2");
         var book = new Book(0, "TestBook_1", author, List.of(genre1, genre2), null);
