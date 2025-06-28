@@ -1,0 +1,14 @@
+spring:
+  data:
+    mongodb:
+      database: library
+  main:
+    allow-bean-definition-overriding: true
+
+mongock:
+  runner-type: "InitializingBean"
+  migration-scan-package:
+    - ru.otus.hw.migrations.changeunits
+  mongo-db:
+    write-concern:
+      journal: false
