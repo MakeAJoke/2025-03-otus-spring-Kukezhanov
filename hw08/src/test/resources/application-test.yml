@@ -1,0 +1,9 @@
+spring:
+  data:
+    mongodb:
+      database: library
+  main:
+    allow-bean-definition-overriding: true
+
+mongock:
+  enabled: false
