@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:maindb
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+
+    properties:
+      hibernate:
+        format_sql: true
+
+    show-sql: true
+
+  liquibase:
+    contexts: dev
+  h2:
+    console:
+      path: /h2-console
+      settings:
+        web-allow-others: true
