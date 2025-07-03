@@ -89,26 +89,20 @@ class GenreServiceImplIntegrationTest {
 
     @Test
     void shouldUpdateGenre() {
-        Genre genre = mongoTemplate.findOne(
+        Genre originalGenre = mongoTemplate.findOne(
                 Query.query(Criteria.where("name").is("Genre_1")),
                 Genre.class
         );
 
-        assertThat(genre).isNotNull();
-
-        genre.setName("UPDATED_GENRE_NAME");
-
-        GenreDto genreDto = genreConverter.genreToDto(genre);
-
+        originalGenre.setName("UPDATED_GENRE_NAME");
+        GenreDto genreDto = genreConverter.genreToDto(originalGenre);
         GenreDto expectedGenreDto = genreService.update(genreDto);
 
-        Genre actualGenre = mongoTemplate.findOne(
+        Genre oldGenre = mongoTemplate.findOne(
                 Query.query(Criteria.where("name").is("Genre_1")),
                 Genre.class
         );
-        assertThat(actualGenre).isNull();
-
-        actualGenre = mongoTemplate.findOne(
+        Genre actualGenre = mongoTemplate.findOne(
                 Query.query(new Criteria().andOperator(
                                 Criteria.where("id").is(expectedGenreDto.id()),
                                 Criteria.where("name").is("UPDATED_GENRE_NAME")
@@ -116,6 +110,9 @@ class GenreServiceImplIntegrationTest {
                 ),
                 Genre.class
         );
+
+        assertThat(originalGenre).isNotNull();
+        assertThat(oldGenre).isNull();
         assertThat(actualGenre).isNotNull();
     }
 

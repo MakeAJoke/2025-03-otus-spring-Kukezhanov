@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.hw.converters.GenreConverter;
 import ru.otus.hw.exceptions.EntityNotFoundException;
+import ru.otus.hw.models.Book;
 import ru.otus.hw.models.Genre;
 import ru.otus.hw.models.dto.GenreDto;
 import ru.otus.hw.repositories.BookRepository;
@@ -39,7 +40,15 @@ public class GenreServiceImpl implements GenreService {
         Genre genre = genreRepository.findById(genreDto.id()).orElseThrow(() ->
                 new EntityNotFoundException("Genre with id %s not found".formatted(genreDto.id())));
         genre.setName(genreDto.name());
-        return genreConverter.genreToDto(genreRepository.save(genre));
+        genreConverter.genreToDto(genreRepository.save(genre));
+
+        List<Book> books = bookRepository.findAllByGenresId(genreDto.id());
+        for (Book book : books) {
+            book.getGenres().removeIf(bookGenre -> bookGenre.getId().equals(genre.getId()));
+            book.getGenres().add(genre);
+            bookRepository.save(book);
+        }
+        return genreDto;
     }
 
     @Override
