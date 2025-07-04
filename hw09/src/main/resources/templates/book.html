@@ -30,7 +30,7 @@
             <p class="h3">Book info</p>
             <div class="d-flex flex-row mb-3 gap-2">
                 <a class="btn btn-primary" href="book-edit.html" th:href="@{/books/edit(id=${book.id})}">Edit</a>
-                <form th:action="@{/books/delete(id=${book.id})}" method="post" onsubmit="return confirm('Confirm to delete book?');">
+                <form th:action="@{/books(id=${book.id})}" method="post" onsubmit="return confirm('Confirm to delete book?');">
                     <input type="hidden" name="_method" value="delete"/>
                     <button class="btn btn-warning" type="submit">Delete</button>
                 </form>

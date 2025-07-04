@@ -25,6 +25,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -176,7 +177,7 @@ public class BookControllerTest {
 
         given(bookService.create(requestBookDto)).willReturn(createdBookDto);
 
-        mockMvc.perform(post("/books/create")
+        mockMvc.perform(post("/books")
                         .param("id", "0")
                         .param("title", "Book_1")
                         .param("author", "1")
@@ -212,7 +213,7 @@ public class BookControllerTest {
         given(bookService.update(requestBookDto)).willReturn(bookDto);
         InOrder inOrder = inOrder(bookService);
 
-        mockMvc.perform(post("/books/edit")
+        mockMvc.perform(put("/books")
                         .param("id", "1")
                         .param("title", "Book_1")
                         .param("author", "1")
@@ -229,7 +230,7 @@ public class BookControllerTest {
         doNothing().when(bookService).deleteById(1);
         InOrder inOrder = inOrder(bookService);
 
-        mockMvc.perform(delete("/books/delete")
+        mockMvc.perform(delete("/books")
                         .param("id", "1"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/books"));

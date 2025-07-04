@@ -27,7 +27,8 @@
                     </div>
                 </div>
             </nav>
-            <form th:action="@{/books/edit(id=${book.id})}" th:method="post" th:object="${book}">
+            <form th:action="@{/books(id=${book.id})}" method="post" th:object="${book}">
+                <input type="hidden" name="_method" value="put"/>
                 <div class="row mb-3">
                     <label class="col-sm-2 col-form-label">ID</label>
                     <div class="col-sm-10">

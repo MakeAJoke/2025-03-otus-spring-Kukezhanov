@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
@@ -78,13 +79,13 @@ public class BookController {
         return "book-edit";
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public String createBook(BookDto bookDto) {
         bookService.create(bookDto);
         return "redirect:/books";
     }
 
-    @PostMapping("/edit")
+    @PutMapping
     public String updateBook(@RequestParam("id") long id, BookDto bookDto) {
         bookService.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found"));
@@ -92,7 +93,7 @@ public class BookController {
         return "redirect:/books";
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping
     public String deleteBook(@RequestParam("id") long id) {
         bookService.deleteById(id);
         return "redirect:/books";

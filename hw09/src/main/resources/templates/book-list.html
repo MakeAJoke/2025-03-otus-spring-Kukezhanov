@@ -74,7 +74,7 @@
                             </span>
                         </td>
                         <td>
-                            <form th:action="@{/books/delete(id=${book.id})}" method="post" onsubmit="return confirm('Confirm to delete book?');">
+                            <form th:action="@{/books(id=${book.id})}" method="post" onsubmit="return confirm('Confirm to delete book?');">
                                 <input type="hidden" name="_method" value="delete"/>
                                 <button class="btn btn-warning btn-sm" type="submit">Delete</button>
                             </form>
