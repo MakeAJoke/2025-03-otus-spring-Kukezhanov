@@ -1,0 +1,24 @@
+databaseChangeLog:
+- changeSet:
+    id: 2025-07-11-create-table-users
+    author: mkukezhanov
+    createTable:
+      tableName: users
+      columns:
+        - column:
+            name: id
+            type: bigint
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+        - column:
+            name: username
+            type: varchar(255)
+            constraints:
+              nullable: false
+        - column:
+            name: password
+            type: varchar(500)
+            constraints:
+              nullable: false
