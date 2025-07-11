@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Books</title>
+        <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+
+        <style>
+            .custom-table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            .custom-table th,
+            .custom-table td {
+                border: 1px solid #dee2e6;
+                padding: 0.75rem;
+            }
+
+            .custom-table thead th {
+                background-color: #343a40;
+                color: white;
+            }
+
+            .custom-table td:last-child,
+            .custom-table th:last-child {
+                border: none !important;
+                background-color: transparent;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container p-3">
+            <nav class="navbar navbar-expand-lg">
+                <div class="container-fluid px-0">
+                    <a class="navbar-brand pt-0" href="#">Library</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="author-list.html" th:href="@{/authors}">Authors</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="genre-list.html" th:href="@{/genres}">Genres</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <p class="h3">Books</p>
+            <a class="btn btn-success" href="book-create.html" th:href="@{/books/create}">Add book</a>
+            <table class="table mt-2 align-middle custom-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Genres</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="book : ${books}">
+                        <td>
+                            <a th:text="${book.title}" th:href="@{/books/{bookId}(bookId=${book.id})}">Book title</a>
+                        </td>
+                        <td th:text="${book.author.fullName}">Author name</td>
+                        <td>
+                            <span th:each="genre,iterStat : ${book.genres}">
+                                <span th:text="${genre.name}">Genre name</span><span th:if="${!iterStat.last}">, </span>
+                            </span>
+                        </td>
+                        <td>
+                            <form th:action="@{/books(id=${book.id})}" method="post" onsubmit="return confirm('Confirm to delete book?');">
+                                <input type="hidden" name="_method" value="delete"/>
+                                <button class="btn btn-warning btn-sm" type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
