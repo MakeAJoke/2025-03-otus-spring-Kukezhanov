@@ -1,0 +1,14 @@
+databaseChangeLog:
+- changeSet:
+    id: 2025-08-19--create-news-data
+    author: mkukezhanov
+    context: dev
+    runOnChange: true
+    loadUpdateData:
+      primaryKey: id
+      file: ../csv/2025-08-19--news.csv
+      relativeToChangelogFile: true
+      separator: ;
+      quotChar: '"'
+      encoding: UTF-8
+      tableName: news

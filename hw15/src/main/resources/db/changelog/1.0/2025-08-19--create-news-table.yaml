@@ -1,0 +1,29 @@
+databaseChangeLog:
+- changeSet:
+    id: 2025-08-19--create-news-table
+    author: mkukezhanov
+    createTable:
+      tableName: news
+      columns:
+        - column:
+            name: id
+            type: bigint
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+        - column:
+            name: type
+            type: varchar(100)
+            constraints:
+              nullable: false
+        - column:
+            name: text
+            type: varchar(3000)
+            constraints:
+              nullable: false
+        - column:
+            name: created_at
+            type: timestamp
+            constraints:
+              nullable: false
