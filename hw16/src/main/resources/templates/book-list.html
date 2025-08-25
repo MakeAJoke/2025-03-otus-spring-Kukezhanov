@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Books</title>
+        <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+
+        <style>
+            .custom-table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            .custom-table th,
+            .custom-table td {
+                border: 1px solid #dee2e6;
+                padding: 0.75rem;
+            }
+
+            .custom-table thead th {
+                background-color: #343a40;
+                color: white;
+            }
+
+            .custom-table td:last-child,
+            .custom-table th:last-child {
+                border: none !important;
+                background-color: transparent;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container p-3">
+            <nav class="navbar navbar-expand-lg">
+                <div class="container-fluid px-0">
+                    <a class="navbar-brand pt-0" href="#">Library</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/authors">Authors</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/genres">Genres</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <p class="h3">Books</p>
+            <a class="btn btn-success" href="/books/create">Add book</a>
+            <table class="table mt-2 align-middle custom-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Genres</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="books-info">
+                </tbody>
+            </table>
+        </div>
+        <script>
+            function deleteEventListener(bookId) {
+                if (!confirm("Confirm to delete book?")) {
+                    return
+                }
+
+                fetch("/datarest/book/" + bookId, { method: 'DELETE' })
+                    .then(response => {
+                            if (response.ok) {
+                                loadBooks()
+                            }
+                        }
+                    );
+            }
+
+            function addBookInfo(bookInfo) {
+                let tBody = document.getElementById("books-info");
+
+                let row = document.createElement('tr');
+
+                let bookTitle = document.createElement('td');
+                let bookLink = document.createElement('a')
+                bookLink.href = "/books/" + bookInfo.id;
+                bookLink.innerHTML = bookInfo.title;
+                bookTitle.appendChild(bookLink);
+
+                let bookAuthor = document.createElement('td');
+                bookAuthor.innerHTML = bookInfo.author.fullName;
+
+                let bookGenres = document.createElement('td');
+                bookGenres.innerHTML = bookInfo.genres.map(g => g.name).join(', ');
+
+                let bookDeleteHolder = document.createElement('td');
+                let bookDeleteButton = document.createElement('button');
+                bookDeleteButton.className = "btn btn-warning btn-sm";
+                bookDeleteButton.innerHTML = "Delete";
+                bookDeleteButton.addEventListener('click', function() {
+                    deleteEventListener(bookInfo.id)
+                });
+
+                bookDeleteHolder.appendChild(bookDeleteButton);
+
+                row.appendChild(bookTitle);
+                row.appendChild(bookAuthor);
+                row.appendChild(bookGenres);
+                row.appendChild(bookDeleteHolder);
+
+                tBody.appendChild(row);
+            }
+
+            function loadBooks() {
+                fetch("datarest/book")
+                    .then(response => response.json())
+                    .then(data => {
+                            const books = data?._embedded?.books ?? []
+                            let tbody = document.getElementById('books-info');
+                            tbody.innerHTML = '';
+                            books.forEach(bookInfo => addBookInfo(bookInfo));
+                        }
+                    );
+            }
+
+            loadBooks();
+        </script>
+    </body>
+</html>

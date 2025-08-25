@@ -1,0 +1,19 @@
+databaseChangeLog:
+- changeSet:
+    id: 2025-05-24--books-genres-data
+    author: mkukezhanov
+    context: dev
+    runOnChange: true
+    loadData:
+      file: ../csv/2025-05-24--books-genres.csv
+      relativeToChangelogFile: true
+      separator: ;
+      quotChar: '"'
+      encoding: UTF-8
+      tableName: books_genres
+- changeSet:
+    id: 2025-05-24-reset-genres-seq
+    author: mkukezhanov
+    context: dev
+    sql: >
+      ALTER TABLE genres ALTER COLUMN id RESTART WITH 100;
