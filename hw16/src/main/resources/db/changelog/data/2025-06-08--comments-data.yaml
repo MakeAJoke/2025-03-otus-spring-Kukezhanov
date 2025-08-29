@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2025-06-08--comments-data
+      author: mkukezhanov
+      context: dev
+      runOnChange: true
+      loadUpdateData:
+        primaryKey: id
+        file: ../csv/2025-06-08--comments.csv
+        relativeToChangelogFile: true
+        separator: ;
+        quotChar: '"'
+        encoding: UTF-8
+        tableName: comments
+  - changeSet:
+      id: 2025-05-24-reset-comments-seq
+      author: mkukezhanov
+      context: dev
+      sql: >
+        ALTER TABLE comments ALTER COLUMN id RESTART WITH 100;

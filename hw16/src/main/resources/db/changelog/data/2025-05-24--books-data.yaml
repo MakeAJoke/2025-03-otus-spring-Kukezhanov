@@ -1,0 +1,20 @@
+databaseChangeLog:
+- changeSet:
+    id: 2025-05-24--books-data
+    author: mkukezhanov
+    context: dev
+    runOnChange: true
+    loadUpdateData:
+      primaryKey: id
+      file: ../csv/2025-05-24--books.csv
+      relativeToChangelogFile: true
+      separator: ;
+      quotChar: '"'
+      encoding: UTF-8
+      tableName: books
+- changeSet:
+    id: 2025-05-24-reset-books-seq
+    author: mkukezhanov
+    context: dev
+    sql: >
+      ALTER TABLE books ALTER COLUMN id RESTART WITH 100;
