@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Book title</title>
+        <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    </head>
+    <body>
+        <div class="container p-3">
+            <nav class="navbar navbar-expand-lg">
+                <div class="container-fluid px-0">
+                    <a class="navbar-brand pt-0" href="#">Library</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" aria-current="page" href="/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/authors">Authors</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/genres">Genres</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <p class="h3">Book info</p>
+            <div class="d-flex flex-row mb-3 gap-2">
+                <a id="edit-book-link" class="btn btn-primary">Edit</a>
+                <button id="delete-book-button" class="btn btn-warning" type="submit">Delete</button>
+            </div>
+            <div>
+                <div class="mb-3">
+                    <label class="form-label me-2"><strong>Title:</strong></label>
+                    <label id="book-title-field" class="form-label">Title</label>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label me-2"><strong>Author:</strong></label>
+                    <label id="book-author-field" class="form-label">Author</label>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label me-2"><strong>Genres:</strong></label>
+                    <label id="book-genres-field" class="form-label">Genres</label>
+                </div>
+            </div>
+            <p class="h3">Comments</p>
+            <div id="comments">
+            </div>
+        </div>
+        <script>
+            function setActionsLink(bookId) {
+                const bookEditLink = document.getElementById("edit-book-link");
+                bookEditLink.href = `/books/edit?id=${bookId}`;
+
+                const bookDeleteButton = document.getElementById("delete-book-button");
+                bookDeleteButton.addEventListener('click', function() {
+                    if (!confirm("Confirm to delete book?")) {
+                        return
+                    }
+
+                    fetch(`/api/book?id=${bookId}`, { method: 'DELETE' })
+                        .then(response => {
+                                if (response.ok) {
+                                    window.location.href = "/books"
+                                }
+                        });
+                });
+            }
+
+            function setBookInfo(bookInfo) {
+                const bookTitleField = document.getElementById("book-title-field");
+                const bookAuthorField = document.getElementById("book-author-field");
+                const bookGenresField = document.getElementById("book-genres-field");
+
+                bookTitleField.innerHTML = bookInfo.title;
+                bookAuthorField.innerHTML = bookInfo.author.fullName;
+                bookGenresField.innerHTML = bookInfo.genres.map(g => g.name).join(', ');
+            }
+
+            function loadComments(bookId) {
+                const commentHolder = document.getElementById("comments");
+                fetch("/api/book/"+bookId+"/comment")
+                    .then(response => response.json())
+                    .then(commentList => {
+                        commentList.forEach(comment => {
+                            let hr = document.createElement("hr");
+                            let commentContent = document.createElement("span")
+                            commentContent.innerHTML = comment.text;
+                            commentHolder.appendChild(hr);
+                            commentHolder.appendChild(commentContent);
+                        });
+                    });
+            }
+
+            function loadBook(bookId) {
+                fetch("/api/book/"+bookId)
+                    .then(response => response.json())
+                    .then(bookInfo => {
+                        document.title = bookInfo.title;
+                        setBookInfo(bookInfo);
+                        loadComments(bookInfo.id);
+                    });
+            }
+
+            const bookId = window.location.pathname.split('/')[2];
+            setActionsLink(bookId)
+
+            loadBook(bookId)
+        </script>
+    </body>
+</html>

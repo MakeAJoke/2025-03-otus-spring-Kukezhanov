@@ -1,0 +1,20 @@
+databaseChangeLog:
+- changeSet:
+    id: 2025-05-24--authors-data
+    author: mkukezhanov
+    contextFilter: dev
+    runOnChange: true
+    loadUpdateData:
+      primaryKey: id
+      file: ../csv/2025-05-24--authors.csv
+      relativeToChangelogFile: true
+      separator: ;
+      quotChar: '"'
+      encoding: UTF-8
+      tableName: authors
+- changeSet:
+    id: 2025-05-24-reset-author-seq
+    author: mkukezhanov
+    contextFilter: dev
+    sql: >
+      ALTER TABLE authors ALTER COLUMN id RESTART WITH 100;

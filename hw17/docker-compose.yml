@@ -1,0 +1,21 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8181:8181"
+    # Эти свойства перегружают соответствующие в application.yml
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/library
+      - SPRING_DATASOURCE_USERNAME=admin_lib
+      - SPRING_DATASOURCE_PASSWORD=admin_lib_pass
+      - SERVER_PORT=8181
+  postgres:
+    image: "postgres:17"
+    ports:
+      - "5445:5432"
+    environment:
+      - POSTGRES_USER=admin_lib
+      - POSTGRES_PASSWORD=admin_lib_pass
+      - POSTGRES_DB=library

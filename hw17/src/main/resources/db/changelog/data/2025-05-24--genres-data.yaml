@@ -1,0 +1,20 @@
+databaseChangeLog:
+- changeSet:
+    id: 2025-05-24--genres-data
+    author: mkukezhanov
+    contextFilter: dev
+    runOnChange: true
+    loadUpdateData:
+      primaryKey: id
+      file: ../csv/2025-05-24--genres.csv
+      relativeToChangelogFile: true
+      separator: ;
+      quotChar: '"'
+      encoding: UTF-8
+      tableName: genres
+- changeSet:
+    id: 2025-05-24-reset-genres-seq
+    author: mkukezhanov
+    contextFilter: dev
+    sql: >
+      ALTER TABLE genres ALTER COLUMN id RESTART WITH 100;
