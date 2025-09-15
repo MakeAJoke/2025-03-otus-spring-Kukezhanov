@@ -1,0 +1,69 @@
+plugins {
+    id 'java'
+    id 'io.spring.dependency-management'
+    id 'org.springframework.boot' apply false
+    id 'name.remal.sonarlint' apply false
+    id 'com.diffplug.spotless' apply false
+}
+
+allprojects {
+    group = 'kz.mkukezhanov'
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+
+    apply plugin: "io.spring.dependency-management"
+    dependencyManagement {
+        dependencies {
+            imports {
+                mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
+                mavenBom("org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion")
+            }
+        }
+    }
+}
+
+subprojects {
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'java'
+    apply plugin: 'name.remal.sonarlint'
+    apply plugin: 'com.diffplug.spotless'
+
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+
+    spotless {
+        java {
+            palantirJavaFormat("2.38.0")
+        }
+    }
+
+    sonarlint {
+        nodeJs {
+            detectNodeJs = false
+            logNodeJsNotFound = false
+        }
+    }
+
+    tasks {
+        withType(JavaCompile) {
+            options.encoding = "UTF-8"
+            options.compilerArgs += ["-Xlint:all", "-serial","-processing"]
+
+            dependsOn "spotlessApply", "sonarlintMain"
+        }
+
+        withType(Test) {
+            useJUnitPlatform()
+            testLogging {
+                showExceptions = true
+            }
+            reports {
+                junitXml.required = true
+                html.required = true
+            }
+        }
+    }
+}
